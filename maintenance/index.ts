@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 
 import {EscapeHatch} from './escape_hatch';
-import {install} from './installer';
+// import {install} from './installer';
 import {run} from './util';
 
 function getUserName() {
@@ -45,18 +45,18 @@ function main() {
     const escapeHatch = new EscapeHatch();
     escapeHatch.init(machineId);
 
-    firebase
-      .database()
-      .ref('/admin/firmware_url')
-      .on('value', (snapshot) => {
-        // e.g. https://codeload.github.com/pascaljp/brewery_kit/zip/refs/tags/1.0
-        const firmwareUrl: string = snapshot.val();
-        if (typeof firmwareUrl == 'string') {
-          console.log(`Installing ${firmwareUrl}`);
-          install(rootDir, firmwareUrl);
-          // TODO: Restart the job.
-        }
-      });
+    // firebase
+    //   .database()
+    //   .ref('/admin/firmware_url')
+    //   .on('value', (snapshot) => {
+    //     // e.g. https://codeload.github.com/pascaljp/brewery_kit/zip/refs/tags/1.0
+    //     const firmwareUrl: string = snapshot.val();
+    //     if (typeof firmwareUrl == 'string') {
+    //       console.log(`Installing ${firmwareUrl}`);
+    //       install(rootDir, firmwareUrl);
+    //       // TODO: Restart the job.
+    //     }
+    //   });
   } catch (e) {
     console.error(e);
   }
