@@ -1,5 +1,5 @@
 const path = require('path');
-const nodeExternals = require('webpack-node-externals');
+// const nodeExternals = require('webpack-node-externals');
 const {TsConfigPathsPlugin} = require('awesome-typescript-loader');
 
 module.exports = [
@@ -7,7 +7,7 @@ module.exports = [
     mode: 'development',
     entry: './maintenance/index.ts',
     target: 'node',
-    externals: [nodeExternals()],
+    // externals: [nodeExternals()],
     node: {
       __dirname: false,
       __filename: false,
