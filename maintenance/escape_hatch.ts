@@ -5,6 +5,20 @@ class EscapeHatch {
   constructor() {}
 
   init(machineId: string) {
+    // Special path that anyone can write under the following conditions.
+    // - The key needs to be ' '.
+    // - The value needs to be a string 'fake'.
+    //
+    // The purpose is to create a path
+    // '/admin/escape_hatch/${machineId}/request' so that reqRoot can listen
+    // the changes to the path.
+    firebase
+      .database()
+      .ref(`/admin/escape_hatch/${machineId}/request`)
+      .child(' ')
+      .set('fake');
+    console.log(`machine id: ${machineId}`);
+
     // Anyone can read.
     // Admin of the system can write.
     const reqRoot = firebase
@@ -34,7 +48,7 @@ class EscapeHatch {
       o[key] = result;
       try {
         await resRoot.update(o);
-      } catch(e) {
+      } catch (e) {
         console.warn(e);
       }
     };
@@ -44,9 +58,11 @@ class EscapeHatch {
       .limitToLast(1)
       .once('value')
       .then((snapshot) => {
+        console.log(snapshot.val());
         const lastKey = snapshot.val()
           ? Object.keys(snapshot.val())[0] || ''
           : '';
+        console.log(lastKey);
         reqRoot.orderByKey().startAfter(lastKey).on('child_added', callback);
         reqRoot.orderByKey().startAfter(lastKey).on('child_changed', callback);
       })

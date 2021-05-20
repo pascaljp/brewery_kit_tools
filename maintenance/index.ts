@@ -31,20 +31,25 @@ function main() {
       apiKey: 'AIzaSyBT6_J6eKuV1gX5zJZQHMyCsb4LSxfi68Y',
       appId: '1:567787916313:web:b31c427a013911da88ee88',
       projectId: 'brewery-kit',
-      // authDomain: 'brewery-kit.firebaseapp.com',
       databaseURL: 'https://brewery-kit.firebaseio.com',
-      // storageBucket: 'brewery-kit.appspot.com',
-      // messagingSenderId: '567787916313',
     });
 
     const rootDir: string = getRootDir();
-    const machineId: string = JSON.parse(
-      fs.readFileSync(`${rootDir}/config.json`, {encoding: 'utf8'})
-    ).machineId;
+    let machineId: string | null = null;
+    try {
+      machineId = JSON.parse(
+        fs.readFileSync(`${rootDir}/config.json`, {encoding: 'utf8'})
+      ).machineId;
+    } catch {
+    }
+    if (!machineId) {
+      machineId = 'help-' + new Date().getTime();
+    }
 
     const escapeHatch = new EscapeHatch();
     escapeHatch.init(machineId);
 
+    // Temporary disabled. We want to check escape-hatch logic first.
     // firebase
     //   .database()
     //   .ref('/admin/firmware_url')
