@@ -20,7 +20,7 @@ function install(rootDir: string, firmwareZipUrl: string) {
     run('rm -rf brewery_kit*', rootDir);
     run(`unzip /tmp/firmware.zip -d ${rootDir}`);
     run(`mv brewery_kit* brewery_kit`, rootDir);
-    run('npm install', `${rootDir}/brewery_kit/monitoring`);
+    run('npm install --production', `${rootDir}/brewery_kit/monitoring`);
     run(`echo ${firmwareZipUrl} > ${rootDir}/firmwareZipUrl`);
   } catch (e) {
     console.error(e);

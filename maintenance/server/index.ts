@@ -1,28 +1,15 @@
 import firebase from 'firebase';
 import * as fs from 'fs';
-import * as os from 'os';
+
+import {getConfigPath} from '../common/config';
 
 import {EscapeHatch} from './escape_hatch';
 // import {install} from './installer';
-import {run} from './util';
 
-function getUserName() {
-  return os.userInfo().username;
-}
-
-function isOnDocker() {
-  return getUserName() == 'docker';
-}
-
-function getRootDir() {
-  if (isOnDocker()) {
-    const userName = getUserName();
-    run(`sudo chown ${userName}:${userName} -R /mnt/inkbird`);
-    return '/mnt/inkbird';
-  } else {
-    run('mkdir -p /tmp/inkbird');
-    return '/tmp/inkbird';
-  }
+function getConfig(): {machineId: string} {
+  return JSON.parse(
+    fs.readFileSync(getConfigPath(), {encoding: 'utf8'})
+  );
 }
 
 function main() {
@@ -34,20 +21,11 @@ function main() {
       databaseURL: 'https://brewery-kit.firebaseio.com',
     });
 
-    const rootDir: string = getRootDir();
-    let machineId: string | null = null;
-    try {
-      machineId = JSON.parse(
-        fs.readFileSync(`${rootDir}/config.json`, {encoding: 'utf8'})
-      ).machineId;
-    } catch {
-    }
-    if (!machineId) {
-      machineId = 'help-' + new Date().getTime();
-    }
+    const config = getConfig();
 
+    // Run the escape hatch service.
     const escapeHatch = new EscapeHatch();
-    escapeHatch.init(machineId);
+    escapeHatch.init(config.machineId);
 
     // Temporary disabled. We want to check escape-hatch logic first.
     // firebase
