@@ -59,18 +59,19 @@ function install_brewery_kit() {
 
   # Prepare new source code.
   BASE_DIR=$(mktemp -d)
-  URL=https://codeload.github.com/pascaljp/brewery_kit/zip/refs/tags/1.0
+  URL=https://codeload.github.com/pascaljp/brewery_kit/zip/refs/tags/2.0
   cd ${BASE_DIR}
   curl ${URL} -o ./source.zip
   unzip ./source.zip
 
   # Reuse existing node_modules.
-  if [[ -d ${SOURCE_DIR}/brewery_kit/monitoring/node_modules ]]; then
-    mv ${SOURCE_DIR}/brewery_kit/monitoring/node_modules brewery_kit*/monitoring
+  if [[ -d ${SOURCE_DIR}/brewery_kit/node_modules ]]; then
+    mv ${SOURCE_DIR}/brewery_kit/node_modules brewery_kit*/
   fi
   sudo rm -rf ${SOURCE_DIR}/brewery_kit
   sudo mv brewery_kit* ${SOURCE_DIR}/brewery_kit
-  run "cd /mnt/inkbird/brewery_kit/monitoring; npm install --production"
+  run "cd /mnt/inkbird/brewery_kit; npm install --production"
+  run 'sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)'
 
   sudo bash -c "echo ${URL} > ${SOURCE_DIR}/url_brewery_kit"
 }

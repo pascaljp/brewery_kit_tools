@@ -10,7 +10,7 @@ LABEL target="Raspberry Pi Zero" description="Container for inkbird client"
 ARG username=docker
 
 RUN apk update \
-  && apk add bash curl npm python3 make g++
+  && apk add bash curl npm python3 make g++ libcap
 # For npm install usb.
 RUN apk add linux-headers eudev-dev bluez-libs
 
