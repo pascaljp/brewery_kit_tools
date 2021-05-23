@@ -1,10 +1,16 @@
 import {execSync} from 'child_process';
-import firebase from 'firebase';
+import firebase from '@firebase/app';
+import '@firebase/database';
+import type {DataSnapshot} from '@firebase/database-types';
 
 class EscapeHatch {
   constructor() {}
 
   init(machineId: string) {
+    if (!firebase.database) {
+      throw new Error('Firebase realtime database is not available');
+    }
+
     // Special path that anyone can write under the following conditions.
     // - The key needs to be ' '.
     // - The value needs to be a string 'fake'.
@@ -33,7 +39,7 @@ class EscapeHatch {
       .database()
       .ref(`/admin/escape_hatch/${machineId}/response`);
 
-    const callback = async (snapshot: firebase.database.DataSnapshot) => {
+    const callback = async (snapshot: DataSnapshot) => {
       const command = snapshot.val();
       console.log(command);
       let result = null;
