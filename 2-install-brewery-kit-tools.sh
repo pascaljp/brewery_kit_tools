@@ -71,7 +71,6 @@ function install_brewery_kit() {
   sudo rm -rf ${SOURCE_DIR}/brewery_kit
   sudo mv brewery_kit* ${SOURCE_DIR}/brewery_kit
   run "cd /mnt/inkbird/brewery_kit; npm install --production"
-  run 'sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)'
 
   sudo bash -c "echo ${URL} > ${SOURCE_DIR}/url_brewery_kit"
 }

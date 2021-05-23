@@ -10,9 +10,13 @@ LABEL target="Raspberry Pi Zero" description="Container for inkbird client"
 ARG username=docker
 
 RUN apk update \
-  && apk add bash curl npm python3 make g++ libcap
+  && apk add bash curl npm python3 make g++ sudo
 # For npm install usb.
 RUN apk add linux-headers eudev-dev bluez-libs
+
+# To use @abandonware/noble without root permission.
+# Document: https://github.com/abandonware/noble#running-without-rootsudo-linux-specific
+RUN apk add libcap && setcap cap_net_raw+eip $(eval readlink -f `which node`)
 
 RUN adduser --home=/mnt/inkbird --disabled-password -G wheel --shell /bin/bash ${username}
 RUN echo '%wheel ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
