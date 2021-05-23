@@ -8,7 +8,7 @@ RUN bash /tmp/install_brewery_kit.sh
 
 
 FROM alpine:3.12
-RUN apk add bash nodejs
+RUN apk add bash nodejs sudo
 # To use @abandonware/noble without root permission.
 # Document: https://github.com/abandonware/noble#running-without-rootsudo-linux-specific
 RUN apk add libcap && setcap cap_net_raw+eip $(eval readlink -f `which node`)
