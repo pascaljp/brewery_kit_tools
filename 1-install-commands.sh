@@ -1,6 +1,8 @@
 #!/bin/bash -eux
 # Run this script on host machine.
 
+CLIENT_VERSION=pascaljp/inkbird:raspi-zero
+
 function install_docker() {
   type docker >/dev/null || {
     echo '### Installing docker.'
@@ -12,16 +14,17 @@ function install_docker() {
     # sudo is needed if the computer is not rebooted after running "usermod".
     sudo docker volume create inkbird
   }
+  sudo docker pull ${CLIENT_VERSION}
 }
 
 function install_crontab() {
-  echo '### Installing crontab'
-  # TODO: Download 2-install-brewery-kit-tools.sh from web here.
-  if [[ -z $(crontab -l) ]]; then
+  if [[ -z "$(crontab -l)" ]] || [[ ! -z $(crontab -l | grep '# Updated by brewery-kit') ]]; then
+    echo '### Installing crontab'
     (
       echo '# Updated by brewery-kit'
       echo 'SHELL=/bin/bash'
-      echo "@reboot /home/${USER}/2-install-brewery-kit-tools.sh"
+      echo "@reboot (docker run --rm ${CLIENT_VERSION} cat /home/docker/brewery_kit_tools/2-start_jobs.sh) | bash"
+      echo "0 * * * * (docker run --rm ${CLIENT_VERSION} cat /home/docker/brewery_kit_tools/3-run-hourly.sh) | bash"
     ) | crontab -
   fi
 }
