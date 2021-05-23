@@ -1,25 +1,27 @@
-# How to run an instance:
+FROM alpine:3.12 AS build
+RUN apk add curl npm
+RUN apk add sudo bash python3 make g++ linux-headers eudev-dev bluez-libs
 
-# VOLUME=inkbird
-# MOUNT_POINT=/mnt/inkbird
-# docker volume create ${VOLUME}
-# docker run --privileged --net=host --name brewery-kit-instance --mount type=volume,src=${VOLUME},dst=${MOUNT_POINT} brewery-kit /bin/bash -c "node inkbird.js --tmpdir=${MOUNT_POINT}" -it
+RUN ls
+ADD install_brewery_kit.sh /tmp/install_brewery_kit.sh
+RUN bash /tmp/install_brewery_kit.sh
+
 
 FROM alpine:3.12
-LABEL target="Raspberry Pi Zero" description="Container for inkbird client"
-ARG username=docker
-
-RUN apk update \
-  && apk add bash curl npm python3 make g++ sudo
-# For npm install usb.
-RUN apk add linux-headers eudev-dev bluez-libs
-
+RUN apk add bash nodejs
 # To use @abandonware/noble without root permission.
 # Document: https://github.com/abandonware/noble#running-without-rootsudo-linux-specific
 RUN apk add libcap && setcap cap_net_raw+eip $(eval readlink -f `which node`)
 
+ARG username=docker
 RUN adduser --home=/mnt/inkbird --disabled-password -G wheel --shell /bin/bash ${username}
+RUN mkdir -p /home/docker
 RUN echo '%wheel ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 ENV USER=${username}
+
 USER ${username}
-WORKDIR /mnt/inkbird/
+
+COPY --from=build /tmp/brewery_kit /home/docker/brewery_kit
+COPY --from=build /tmp/brewery_kit_tools /home/docker/brewery_kit_tools
+
+# WORKDIR /mnt/inkbird/
