@@ -18,7 +18,7 @@ function install_crontab() {
     (
       echo '# Updated by brewery-kit'
       echo 'SHELL=/bin/bash'
-      echo '@reboot (docker run --rm '${CLIENT_VERSION}' cat /home/docker/brewery_kit_tools/2-start_jobs.sh) | bash'
+      echo '@reboot (docker run --rm '${CLIENT_VERSION}' cat /home/docker/brewery_kit_tools/2-start-jobs.sh) | bash'
       echo '0 * * * * (docker run --rm '${CLIENT_VERSION}' cat /home/docker/brewery_kit_tools/3-run-hourly.sh) | bash'
     ) | crontab -
   fi
