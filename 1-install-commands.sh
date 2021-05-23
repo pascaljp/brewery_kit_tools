@@ -15,6 +15,7 @@ function install_docker() {
     sudo docker volume create inkbird
   }
   sudo docker pull ${CLIENT_VERSION}
+  echo ${CLIENT_VERSION} > ~/client_version
 }
 
 function install_crontab() {

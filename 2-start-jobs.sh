@@ -4,7 +4,7 @@
 USER=pi
 CLIENT_VERSION=$(cat ~/client_version)
 
-if [[ -z "${CLIENT_VERSION}" ]];
+if [[ -z "${CLIENT_VERSION}" ]]; then
   CLIENT_VERSION=pascaljp/inkbird:raspi-zero
 fi
 
