@@ -15,17 +15,23 @@ function install_docker() {
     sudo docker volume create inkbird
   }
   sudo docker pull ${CLIENT_VERSION}
-  echo ${CLIENT_VERSION} > ~/client_version
+  echo ${CLIENT_VERSION} >~/client_version
 }
 
 function install_crontab() {
+  mkdir -p scripts
+  cd scripts
+  curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-start-jobs.sh -O
+  curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/3-run-hourly.sh -O
+  chmod 755 *.sh
+
   if [[ -z "$(crontab -l)" ]] || [[ ! -z $(crontab -l | grep '# Updated by brewery-kit') ]]; then
     echo '### Installing crontab'
     (
       echo '# Updated by brewery-kit'
       echo 'SHELL=/bin/bash'
-      echo "@reboot (docker run --rm ${CLIENT_VERSION} cat /home/docker/brewery_kit_tools/2-start-jobs.sh) | bash"
-      echo "0 * * * * (docker run --rm ${CLIENT_VERSION} cat /home/docker/brewery_kit_tools/3-run-hourly.sh) | bash"
+      echo "@reboot /home/pi/scripts/brewery_kit_tools/2-start-jobs.sh"
+      echo "0 * * * * /home/pi/scripts/3-run-hourly.sh"
     ) | crontab -
   fi
 }
@@ -35,8 +41,8 @@ function install_3g_network() {
 }
 
 sudo apt -y update
-sudo apt -y install curl  # Required
-sudo apt -y install jq mailutils  # For manual maintenance
+sudo apt -y install curl         # Required
+sudo apt -y install jq mailutils # For manual maintenance
 
 install_docker
 install_crontab

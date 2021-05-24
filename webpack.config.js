@@ -6,8 +6,8 @@ module.exports = [
   {
     mode: 'development',
     entry: {
-      'index.js': './maintenance/server/index.ts',
-      'create_config.js': './maintenance/create_config/index.ts',
+      'index.js': './2-maintain-brewery-kit/ts/server/index.ts',
+      'create_config.js': './2-maintain-brewery-kit/ts/create_config/index.ts',
     },
     target: 'node',
     externals: [nodeExternals()],
@@ -32,7 +32,7 @@ module.exports = [
       extensions: ['.ts', '.js'],
     },
     output: {
-      path: path.resolve(__dirname, './dist'),
+      path: path.resolve(__dirname, './2-maintain-brewery-kit/dist'),
       filename: '[name]',
     },
     cache: false,
