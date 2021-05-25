@@ -45,7 +45,7 @@ setup_host() {
         sudo reboot
         ;;
       '/tmp/inkbird/notify_from_container/new_container_available')
-        # Example: pascaljp/inkbird:raspi-zero
+        # Example: pascaljp/inkbird:x86_64
         if [[ "${CLIENT_VERSION}" =~ ^pascaljp/inkbird:.* ]]; then
           docker pull "${CLIENT_VERSION}" && echo "${CLIENT_VERSION}" >~/client_version && sudo reboot
         fi

@@ -1,10 +1,10 @@
 #!/bin/bash -eu
 
-# # Example: pascaljp/inkbird:raspi-zero
+# # Example: pascaljp/inkbird:x86_64
 # CURRENT_VERSION=$(cat ~/client_version)
 # VERSION=$(curl -sS https://brewery-app.com/client_version)
 # if [[ ! "${VERSION}" =~ ^pascaljp/inkbird:.* ]]; then
-#   VERSION=pascaljp/inkbird:raspi-zero
+#   VERSION=pascaljp/inkbird:x86_64
 # fi
 
 # if [[ "${CURRENT_VERSION}" == "${VERSION}" ]]; then

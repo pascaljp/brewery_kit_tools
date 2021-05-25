@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 # Run this script on host machine.
 
-CLIENT_VERSION=pascaljp/inkbird:raspi-zero
+CLIENT_VERSION=pascaljp/inkbird:$(arch)
 
 function install_docker() {
   type docker >/dev/null || {
@@ -22,6 +22,7 @@ function install_crontab() {
   mkdir -p scripts
   cd scripts
   curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/2-start-jobs.sh -O
+  curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/2-start-jobs-lib.sh -O
   curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/3-run-hourly.sh -O
   chmod 755 *.sh
 

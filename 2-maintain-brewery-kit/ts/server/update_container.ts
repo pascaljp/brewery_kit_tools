@@ -14,7 +14,7 @@ class UpdateContainer {
       .database()
       .ref('/admin/container_name')
       .on('value', (snapshot) => {
-        // e.g. pascaljp/inkbird:raspi-zero
+        // e.g. pascaljp/inkbird:x86_64
         const containerName: string = snapshot.val();
         if (typeof containerName == 'string') {
           fs.writeFileSync(this.notifyPath_, containerName);
