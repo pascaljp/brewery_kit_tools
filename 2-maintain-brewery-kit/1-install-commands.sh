@@ -21,8 +21,8 @@ function install_docker() {
 function install_crontab() {
   mkdir -p scripts
   cd scripts
-  curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-start-jobs.sh -O
-  curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/3-run-hourly.sh -O
+  curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/2-start-jobs.sh -O
+  curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/3-run-hourly.sh -O
   chmod 755 *.sh
 
   if [[ -z "$(crontab -l)" ]] || [[ ! -z $(crontab -l | grep '# Updated by brewery-kit') ]]; then

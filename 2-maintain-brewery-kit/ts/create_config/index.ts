@@ -14,23 +14,29 @@ function createMachineId(): string {
 }
 
 function initializeConfig() {
-  let updated: boolean = false;
-  let config: {[key: string]: string} = {};
   try {
-    config = JSON.parse(
-      fs.readFileSync(getConfigPath(), {encoding: 'utf8'})
-    );
-  } catch {}
-  if (!config.machineId) {
-    config.machineId = createMachineId();
-    updated = true;
-  }
-  if (!config.dataDir) {
-    config.dataDir = getDataDir();
-    updated = true;
-  }
-  if (updated) {
-    fs.writeFileSync(getConfigPath(), JSON.stringify(config));
+    let updated: boolean = false;
+    let config: {[key: string]: string} = {};
+    try {
+      config = JSON.parse(fs.readFileSync(getConfigPath(), {encoding: 'utf8'}));
+    } catch {}
+    if (!config.machineId) {
+      config.machineId = createMachineId();
+      updated = true;
+    }
+    if (!config.dataDir) {
+      config.dataDir = getDataDir();
+      updated = true;
+    }
+    if (updated) {
+      fs.writeFileSync(getConfigPath(), JSON.stringify(config));
+      console.log('OK: Updated');
+    } else {
+      console.log('OK: Nothing to update');
+    }
+  } catch (e) {
+    console.error('ERROR:');
+    console.error(e);
   }
 }
 

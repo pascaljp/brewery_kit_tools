@@ -23,7 +23,7 @@ class EscapeHatch {
       .ref(`/admin/escape_hatch/${machineId}/request`)
       .child(' ')
       .set('fake');
-    console.log(`machine id: ${machineId}`);
+    console.log(`machineId=${machineId}`);
 
     // Anyone can read.
     // Admin of the system can write.
@@ -41,14 +41,16 @@ class EscapeHatch {
 
     const callback = async (snapshot: DataSnapshot) => {
       const command = snapshot.val();
-      console.log(command);
+      console.log(`[Incomming command]: ${command}`);
       let result = null;
       try {
-        result = execSync(command + ' 2>/dev/null').toString();
+        result = execSync(command).toString();
       } catch (e) {
-        console.log(e.stdout.toString());
-        console.warn(e.stderr.toString());
+        const stdout = e.stdout.toString();
+        const stderr = e.stderr.toString();
+        result = `[STDOUT]\n${stdout}\n[STDERR]\n${stderr}`;
       }
+      console.log(`[Outgoing response]\n${result}`);
       const o: {[key: string]: any} = {};
       const key = snapshot.key as string;
       o[key] = result;
@@ -64,16 +66,14 @@ class EscapeHatch {
       .limitToLast(1)
       .once('value')
       .then((snapshot) => {
-        console.log(snapshot.val());
         const lastKey = snapshot.val()
           ? Object.keys(snapshot.val())[0] || ''
           : '';
-        console.log(lastKey);
         reqRoot.orderByKey().startAfter(lastKey).on('child_added', callback);
         reqRoot.orderByKey().startAfter(lastKey).on('child_changed', callback);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }
 }
