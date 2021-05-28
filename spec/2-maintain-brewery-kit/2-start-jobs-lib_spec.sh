@@ -9,7 +9,7 @@ Describe 'calc()'              # Example group
   # End
 
   It 'test'
-    When call create_config_file 'pascaljp/inkbird:x86_64'
+    When call create_config_file 'pascaljp/inkbird:latest'
     The output should equal 1
   End
 End

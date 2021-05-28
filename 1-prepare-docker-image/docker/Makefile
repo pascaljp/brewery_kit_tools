@@ -1,7 +1,6 @@
 BREWERY_KIT_VERSION=2.0
-BREWERY_KIT_TOOLS_VERSION=0.1-rc1
-PLATFORMS=linux/amd64
-# PLATFORMS=linux/arm/v6,linux/amd64
+BREWERY_KIT_TOOLS_VERSION=0.1-rc3
+PLATFORMS=linux/arm/v6,linux/amd64
 
 all: docker
 

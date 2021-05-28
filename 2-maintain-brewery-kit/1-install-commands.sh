@@ -35,7 +35,7 @@ function install_3g_network() {
 }
 
 sudo apt -y update
-sudo apt -y install curl inotifywait # Required
+sudo apt -y install curl inotify-tools # Required
 sudo apt -y install jq mailutils # For manual maintenance
 
 install_docker

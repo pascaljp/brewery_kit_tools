@@ -15,6 +15,7 @@ run_daemon() {
   local CLIENT_VERSION=$1
   local NAME=$2
   local COMMAND=$3
+  docker rm "${NAME}" || true
   docker run -d \
     --restart=on-failure \
     --privileged --net=host \
@@ -38,20 +39,20 @@ setup_host() {
   # Listens to file modifications made by container, and take actions.
   mkdir -p /tmp/inkbird/notify_from_container
   (
-    while :; do
-      FILE=$(inotifywait -e close --format %w%f /tmp/inkbird/notify_from_container)
-      case "${FILE}" in
-      '/tmp/inkbird/notify_from_container/network_error')
-        sudo reboot
-        ;;
-      '/tmp/inkbird/notify_from_container/new_container_available')
-        # Example: pascaljp/inkbird:x86_64
-        if [[ "${CLIENT_VERSION}" =~ ^pascaljp/inkbird:.* ]]; then
-          docker pull "${CLIENT_VERSION}" && echo "${CLIENT_VERSION}" >~/client_version && sudo reboot
-        fi
-        ;;
-      esac
-    done
+    inotifywait -m -e close --format %w%f /tmp/inkbird/notify_from_container | \
+      while read FILE; do
+        case "${FILE}" in
+        '/tmp/inkbird/notify_from_container/network_error')
+          sudo reboot
+          ;;
+        '/tmp/inkbird/notify_from_container/new_container_available')
+          # Example: pascaljp/inkbird:latest
+          if [[ "${CLIENT_VERSION}" =~ ^pascaljp/inkbird:.* ]]; then
+            docker pull "${CLIENT_VERSION}" && echo "${CLIENT_VERSION}" >~/client_version && sudo reboot
+          fi
+          ;;
+        esac
+      done
   ) &
 }
 

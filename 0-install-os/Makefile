@@ -29,7 +29,7 @@ update_image: ${NAME}.img
 	curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/{2-start-jobs.sh} -o ./mnt/home/pi/.inkbird/scripts/#1
 	curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/{2-start-jobs-lib.sh} -o ./mnt/home/pi/.inkbird/scripts/#1
 	curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/{3-run-hourly.sh} -o ./mnt/home/pi/.inkbird/scripts/#1
-	chmod 755 ./mnt/home/pi/scripts/*
+	chmod 755 ./mnt/home/pi/.inkbird/scripts/*
 
 	sudo umount ./mnt
 	rmdir ./mnt
