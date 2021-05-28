@@ -4,10 +4,11 @@ import * as fs from 'fs';
 class UpdateContainer {
   private notifyPath_: string;
 
-  constructor(notifyPath: string) {
+  constructor(notifyPath: string, containerVersion: string) {
     this.notifyPath_ = notifyPath;
 
     if (!firebase.database) {
+      console.log('firebase.database is not defined');
       return;
     }
     firebase
@@ -15,9 +16,12 @@ class UpdateContainer {
       .ref('/admin/container_name')
       .on('value', (snapshot) => {
         // e.g. pascaljp/inkbird:latest
-        const containerName: string = snapshot.val();
-        if (typeof containerName == 'string') {
-          fs.writeFileSync(this.notifyPath_, containerName);
+        const newContainerVersion: string = snapshot.val();
+        if (
+          typeof newContainerVersion == 'string' &&
+          containerVersion != newContainerVersion
+        ) {
+          fs.writeFileSync(this.notifyPath_, newContainerVersion);
         }
       });
   }

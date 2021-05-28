@@ -48,6 +48,7 @@ setup_host() {
         '/tmp/inkbird/notify_from_container/new_container_available')
           # Example: pascaljp/inkbird:latest
           if [[ "${CLIENT_VERSION}" =~ ^pascaljp/inkbird:.* ]]; then
+            echo "New client version: ${CLIENT_VERSION}"
             docker pull "${CLIENT_VERSION}" && echo "${CLIENT_VERSION}" >~/client_version && sudo reboot
           fi
           ;;
@@ -61,6 +62,6 @@ setup_container() {
 
   run ${CLIENT_VERSION} "sudo chown docker:nogroup /mnt/inkbird"
   create_config_file "${CLIENT_VERSION}"
-  run_daemon "${CLIENT_VERSION}" brewery-kit-tools-instance "node /home/docker/brewery_kit_tools/2-maintain-brewery-kit/dist/index.js"
+  run_daemon "${CLIENT_VERSION}" brewery-kit-tools-instance "node /home/docker/brewery_kit_tools/2-maintain-brewery-kit/dist/index.js --version=${CLIENT_VERSION}"
   run_daemon "${CLIENT_VERSION}" brewery-kit-instance "node /home/docker/brewery_kit/monitoring/inkbird.js"
 }
