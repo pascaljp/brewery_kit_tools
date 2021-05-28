@@ -1,5 +1,7 @@
 BREWERY_KIT_VERSION=2.0
-BREWERY_KIT_TOOLS_VERSION=0.1
+BREWERY_KIT_TOOLS_VERSION=0.1-rc1
+PLATFORMS=linux/amd64
+# PLATFORMS=linux/arm/v6,linux/amd64
 
 all: docker
 
@@ -12,12 +14,12 @@ fix-docker-issue:
 
 docker: fix-docker-issue Dockerfile install_brewery_kit.sh
 	docker buildx build \
-		--platform linux/arm/v6,linux/amd64 \
+		--platform "$(PLATFORMS)" \
 		--build-arg BREWERY_KIT_VERSION=$(BREWERY_KIT_VERSION) \
 		--build-arg BREWERY_KIT_TOOLS_VERSION=$(BREWERY_KIT_TOOLS_VERSION) \
-		--build-arg DEV_TIMESTAMP=$(shell date +%s) \
 		--push \
-		-t pascaljp/inkbird:$(BREWERY_KIT_VERSION)-$(BREWERY_KIT_TOOLS_VERSION) .
-		-t pascaljp/inkbird:latest .
-
-		# --progress=plain \
+		-t pascaljp/inkbird:$(BREWERY_KIT_VERSION)-$(BREWERY_KIT_TOOLS_VERSION) \
+		-t pascaljp/inkbird:latest \
+		.
+		# --build-arg DEV_TIMESTAMP=$(shell date +%s) \
+		#--progress=plain \

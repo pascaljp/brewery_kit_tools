@@ -24,11 +24,12 @@ update_image: ${NAME}.img
 	$(eval BYTE_OFFSET := $(shell expr $(OFFSET) \* 512))
 	mkdir -p ./mnt
 	sudo mount -t ext4 -o loop,offset=$(BYTE_OFFSET) ${NAME}.img ./mnt
-	mkdir -p ./mnt/home/pi/scripts/
-	curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/{1-install-commands.sh} -o ./mnt/home/pi/scripts/#1
-	curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/{2-start-jobs.sh} -o ./mnt/home/pi/scripts/#1
-	curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/{2-start-jobs-lib.sh} -o ./mnt/home/pi/scripts/#1
-	curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/{3-run-hourly.sh} -o ./mnt/home/pi/scripts/#1
+	mkdir -p ./mnt/home/pi/.inkbird/scripts/
+	curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/{1-install-commands.sh} -o ./mnt/home/pi/.inkbird/scripts/#1
+	curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/{2-start-jobs.sh} -o ./mnt/home/pi/.inkbird/scripts/#1
+	curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/{2-start-jobs-lib.sh} -o ./mnt/home/pi/.inkbird/scripts/#1
+	curl https://raw.githubusercontent.com/pascaljp/brewery_kit_tools/main/2-maintain-brewery-kit/{3-run-hourly.sh} -o ./mnt/home/pi/.inkbird/scripts/#1
+	chmod 755 ./mnt/home/pi/scripts/*
 
 	sudo umount ./mnt
 	rmdir ./mnt

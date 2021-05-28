@@ -24,8 +24,8 @@ function install_crontab() {
     (
       echo '# Updated by brewery-kit'
       echo 'SHELL=/bin/bash'
-      echo "@reboot /home/pi/scripts/2-start-jobs.sh"
-      echo "0 * * * * /home/pi/scripts/3-run-hourly.sh"
+      echo "@reboot /home/pi/.inkbird/scripts/2-start-jobs.sh"
+      echo "0 * * * * /home/pi/.inkbird/scripts/3-run-hourly.sh"
     ) | crontab -
   fi
 }
@@ -35,7 +35,7 @@ function install_3g_network() {
 }
 
 sudo apt -y update
-sudo apt -y install curl         # Required
+sudo apt -y install curl inotifywait # Required
 sudo apt -y install jq mailutils # For manual maintenance
 
 install_docker
