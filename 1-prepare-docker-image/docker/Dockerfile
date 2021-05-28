@@ -1,6 +1,7 @@
 FROM alpine:3.12 AS build
 RUN apk add curl npm
-RUN apk add sudo bash python3 make g++ linux-headers eudev-dev bluez-libs
+RUN apk add sudo bash python3 make g++ linux-headers bluez-libs
+# RUN apk add eudev-dev
 
 ARG BREWERY_KIT_VERSION
 ARG BREWERY_KIT_TOOLS_VERSION
@@ -10,7 +11,7 @@ ENV BREWERY_KIT_TOOLS_VERSION ${BREWERY_KIT_TOOLS_VERSION:-0.1}
 ENV DEV_TIMESTAMP ${DEV_TIMESTAMP:-}
 
 COPY . /tmp/
-RUN bash /tmp/install_brewery_kit.sh
+RUN bash /tmp/install_brewery_kit.sh "${BREWERY_KIT_VERSION}" "${BREWERY_KIT_TOOLS_VERSION}"
 
 
 FROM alpine:3.12
