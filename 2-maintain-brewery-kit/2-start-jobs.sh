@@ -11,5 +11,5 @@ if [[ -z "${CLIENT_VERSION}" ]]; then
   CLIENT_VERSION=pascaljp/inkbird:latest
 fi
 
-setup_host "${CLIENT_VERSION}"
+setup_host
 setup_container "${CLIENT_VERSION}"

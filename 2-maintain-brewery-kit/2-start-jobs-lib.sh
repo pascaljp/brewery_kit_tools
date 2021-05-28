@@ -33,8 +33,6 @@ create_config_file() {
 }
 
 setup_host() {
-  local CLIENT_VERSION=$1
-
   docker volume create inkbird
   # Listens to file modifications made by container, and take actions.
   mkdir -p /tmp/inkbird/notify_from_container
@@ -46,10 +44,11 @@ setup_host() {
           sudo reboot
           ;;
         '/tmp/inkbird/notify_from_container/new_container_available')
+          local NEW_CLIENT_VERSION=$(cat ${FILE})
           # Example: pascaljp/inkbird:latest
-          if [[ "${CLIENT_VERSION}" =~ ^pascaljp/inkbird:.* ]]; then
-            echo "New client version: ${CLIENT_VERSION}"
-            docker pull "${CLIENT_VERSION}" && echo "${CLIENT_VERSION}" >~/client_version && sudo reboot
+          if [[ "${NEW_CLIENT_VERSION}" =~ ^pascaljp/inkbird:.* ]]; then
+            echo "New client version: ${NEW_CLIENT_VERSION}"
+            docker pull "${NEW_CLIENT_VERSION}" && echo "${NEW_CLIENT_VERSION}" >~/client_version && sudo reboot
           fi
           ;;
         esac
