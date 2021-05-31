@@ -59,6 +59,7 @@ setup_host() {
 setup_container() {
   local CLIENT_VERSION=$1
 
+  docker volume create inkbird
   run ${CLIENT_VERSION} "sudo chown docker:nogroup /mnt/inkbird"
   create_config_file "${CLIENT_VERSION}"
   run_daemon "${CLIENT_VERSION}" brewery-kit-tools-instance "node /home/docker/brewery_kit_tools/2-maintain-brewery-kit/dist/index.js --version=${CLIENT_VERSION}"

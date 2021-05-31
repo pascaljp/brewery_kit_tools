@@ -1,0 +1,4 @@
+# Updated by brewery-kit
+SHELL=/bin/bash
+@reboot /home/pi/.inkbird/scripts/2-start-jobs.sh
+0 * * * * /home/pi/.inkbird/scripts/3-run-hourly.sh
