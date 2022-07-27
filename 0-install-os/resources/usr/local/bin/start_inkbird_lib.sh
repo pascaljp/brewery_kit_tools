@@ -27,7 +27,6 @@ run_daemon() {
 }
 
 create_config_file() {
-  echo $1
   local CLIENT_VERSION=$1
   run "${CLIENT_VERSION}" "node /home/docker/brewery_kit_tools/2-maintain-brewery-kit/dist/create_config.js"
 }

@@ -2,7 +2,7 @@
 # This script runs when the system boots.
 
 cd $(dirname $0)
-source ./2-start-jobs-lib.sh
+source ./start_inkbird_lib.sh
 
 CLIENT_VERSION=$(cat ~/client_version)
 SOURCE_DIR=$(docker volume inspect inkbird | jq -r .[0].Mountpoint)
